@@ -9,6 +9,7 @@ function App() {
   return (
     <div className="App">
       <div className="todo-wrapper">
+        <h1>Daily TODO</h1>
         <div className="todo-input">
 
           <div className="todo-input-item">
