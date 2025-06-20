@@ -1,23 +1,55 @@
 import logo from './logo.svg';
+import React,{useState} from 'react'
+import { MdDeleteOutline  } from "react-icons/md";
+import { FaCheck } from "react-icons/fa";
 import './App.css';
 
 function App() {
+  const [isCompleteScreen, setIsCompleteScreen] = useState(false);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="todo-wrapper">
+        <div className="todo-input">
+
+          <div className="todo-input-item">
+            <label>Title</label>
+            <input type="text" placeholder="Task's Title"/>
+          </div>
+
+          <div className="todo-input-item">
+            <label>Description</label>
+            <input type="text" placeholder="Task's Description"/>
+          </div>
+
+          <div className="todo-input-item">
+            <button type="button" className="primaryBtn">Add</button>
+          </div>
+
+        </div>
+
+        <div className="btn-area">
+          <button className={`secondaryBtn ${isCompleteScreen===false && 'active'}`} onClick={()=>setIsCompleteScreen(false)}>TODO</button>
+          <button className={`secondaryBtn ${isCompleteScreen===true && 'active'}`} onClick={()=>setIsCompleteScreen(true)}>Completed</button>
+        </div>
+
+        <div className="todo-list">
+          <div className="todo-list-item">
+            <div>
+              <h3>Task 1</h3>
+              <p>Description</p>
+            </div>
+
+            <div>
+              <MdDeleteOutline className="icon delete"/>
+              <FaCheck className='icon check'/>
+            </div>
+              
+          </div>
+          
+
+        </div>
+
+      </div>
     </div>
   );
 }
