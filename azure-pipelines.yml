@@ -18,4 +18,14 @@ steps:
 - script: |
     npm install
     npm run build
-  displayName: 'npm install and build'
+  displayName: 'Build React App'
+  
+- script: |
+    mkdir staging
+    cp -r todoapp-frontend/build staging/todoapp-frontend
+  displayName: 'Prepare Deployment Artifact'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: 'staging'
+    artifactName: '$(artifactName)'
