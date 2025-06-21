@@ -22,7 +22,7 @@ steps:
   
 - script: |
     mkdir staging
-    cp -r build staging/todoapp-frontend
+    cp -r build staging/frontend
   displayName: 'Prepare Deployment Artifact'
 
 - task: PublishBuildArtifacts@1
