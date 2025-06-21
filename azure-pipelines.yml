@@ -18,6 +18,7 @@ steps:
 - script: |
     npm install
     npm run build
+    ls
   displayName: 'Build React App'
   
 - script: |
