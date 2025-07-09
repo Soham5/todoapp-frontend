@@ -1,6 +1,6 @@
-.App {
+/* .App {
   text-align: center;
-}
+} */
 body {
   background-color: #1f1e1e;
   color: white;
@@ -128,4 +128,13 @@ body {
 
 .icon.check:hover {
   color: rgb(53, 221, 143);
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    background-color: lavender;
+    color: white;
+    overflow: hidden;
+  }
+  
 }

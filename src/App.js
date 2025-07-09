@@ -1,11 +1,42 @@
 import logo from './logo.svg';
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { MdDeleteOutline  } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
 import './App.css';
 
 function App() {
   const [isCompleteScreen, setIsCompleteScreen] = useState(false);
+  const [allTodos, setTodos] = useState([])
+  const [newTitle, setNewTitle] = useState();
+  const [newDesc, setNewDesc] = useState();
+
+  const addDailyTodo = () => {
+    let newTodoItem = {
+      title:newTitle,
+      desc:newDesc
+    }
+
+    let updatedTodoItems = [...allTodos];
+    updatedTodoItems.push(newTodoItem);
+    setTodos(updatedTodoItems);
+    localStorage.setItem('todolist',JSON.stringify(updatedTodoItems));
+  };
+
+  const deleteDailyTodo = (index) => {
+    console.log(index);
+    let reducedTodo = [...allTodos];
+    reducedTodo.splice(index);
+    localStorage.setItem('todolist',JSON.stringify(reducedTodo));
+    setTodos(reducedTodo);
+  };
+
+  useEffect(() => {
+    let savedTodo = JSON.parse(localStorage.getItem('todolist'));
+    if(savedTodo) {
+      setTodos(savedTodo);
+    }
+  },[])
+
   return (
     <div className="App">
       <div className="todo-wrapper">
@@ -14,16 +45,16 @@ function App() {
 
           <div className="todo-input-item">
             <label>Title</label>
-            <input type="text" placeholder="Task's Title"/>
+            <input type="text" value={newTitle} onChange={(e)=>setNewTitle(e.target.value)} placeholder="Task's Title"/>
           </div>
 
           <div className="todo-input-item">
             <label>Description</label>
-            <input type="text" placeholder="Task's Description"/>
+            <input type="text" value={newDesc} onChange={(e)=>setNewDesc(e.target.value)} placeholder="Task's Description"/>
           </div>
 
           <div className="todo-input-item">
-            <button type="button" className="primaryBtn">Add</button>
+            <button type="button" className="primaryBtn" onClick={addDailyTodo}>Add</button>
           </div>
 
         </div>
@@ -34,19 +65,24 @@ function App() {
         </div>
 
         <div className="todo-list">
-          <div className="todo-list-item">
-            <div>
-              <h3>Task 1</h3>
-              <p>Description</p>
-            </div>
 
-            <div>
-              <MdDeleteOutline className="icon delete"/>
-              <FaCheck className='icon check'/>
-            </div>
-              
+         {allTodos.map((item, index)=> {
+          return (
+            <div className="todo-list-item" key={index}>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
+
+              <div>
+                <MdDeleteOutline className="icon delete" onClick={()=>deleteDailyTodo(index)}/>
+                <FaCheck className='icon check'/>
+              </div>
           </div>
-          
+
+
+          )
+         })}
 
         </div>
 
