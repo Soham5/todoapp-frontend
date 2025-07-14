@@ -9,6 +9,7 @@ function App() {
   const [allTodos, setTodos] = useState([])
   const [newTitle, setNewTitle] = useState();
   const [newDesc, setNewDesc] = useState();
+  const [completedTodos, setCompletedTodos] = useState([])
 
   const addDailyTodo = () => {
     let newTodoItem = {
@@ -23,11 +24,27 @@ function App() {
   };
 
   const deleteDailyTodo = (index) => {
-    console.log(index);
     let reducedTodo = [...allTodos];
-    reducedTodo.splice(index);
+    reducedTodo.splice(index,1);
     localStorage.setItem('todolist',JSON.stringify(reducedTodo));
     setTodos(reducedTodo);
+  };
+
+  const completeDailyTodo = (index) => {
+    let currentDateTime = new Date();
+    let completedOn = currentDateTime.getHours() + ':' + currentDateTime.getMinutes() +':' +currentDateTime.getSeconds();
+    
+    let filteredItems = {
+      ...allTodos[index],
+      completedAt:completedOn
+    }
+    
+    let updatedCompleteArr = [...completedTodos]
+    updatedCompleteArr.push(filteredItems)
+    console.log(updatedCompleteArr);
+    setCompletedTodos(updatedCompleteArr);
+    localStorage.setItem('completedTodolist',JSON.stringify(updatedCompleteArr));
+    deleteDailyTodo(index)
   };
 
   useEffect(() => {
@@ -39,8 +56,9 @@ function App() {
 
   return (
     <div className="App">
+      <h1>Daily TODO</h1>
       <div className="todo-wrapper">
-        <h1>Daily TODO</h1>
+        
         <div className="todo-input">
 
           <div className="todo-input-item">
@@ -66,7 +84,7 @@ function App() {
 
         <div className="todo-list">
 
-         {allTodos.map((item, index)=> {
+         {isCompleteScreen===false && allTodos.map((item, index)=> {
           return (
             <div className="todo-list-item" key={index}>
               <div>
@@ -76,16 +94,30 @@ function App() {
 
               <div>
                 <MdDeleteOutline className="icon delete" onClick={()=>deleteDailyTodo(index)}/>
-                <FaCheck className='icon check'/>
+                <FaCheck className='icon check' onClick={()=>completeDailyTodo(index)}/>
               </div>
           </div>
+          )
+         })}
 
-
+          {isCompleteScreen===true && completedTodos.map((item, index)=> {
+           return (
+            <div className="todo-list-item" key={index}>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+                <p>Completed at: {item.completedAt}</p>
+              </div>
+          </div>
           )
          })}
 
         </div>
 
+      </div>
+
+      <div class="copyright">
+        <p>© 2025 <a href="https://www.sohamsur.com/">Soham Sur</a></p>
       </div>
     </div>
   );
