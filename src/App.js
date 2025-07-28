@@ -46,12 +46,32 @@ function App() {
     deleteDailyTodo(index)
   };
 
+  const checkAndClearTodos = () => {
+    const now = new Date();
+    const today = now.toLocaleDateString();
+    const lastCleared = localStorage.getItem('lastClearedDate');
+
+    // If lastCleared is not today and time is after midnight (00:00)
+    if (lastCleared !== today && now.getHours() === 0 && now.getMinutes() === 0) {
+      localStorage.setItem('todolist', JSON.stringify([]));
+      localStorage.setItem('completedTodolist', JSON.stringify([]));
+      localStorage.setItem('lastClearedDate', today);
+      setTodos([]);
+      setCompletedTodos([]);
+      console.log('Todos cleared automatically after 12:00 AM');
+    }
+  };
+
   useEffect(() => {
     let savedTodo = JSON.parse(localStorage.getItem('todolist'));
     if(savedTodo) {
       setTodos(savedTodo);
     }
-  },[])
+
+    const intervalId = setInterval(checkAndClearTodos, 60000); // check every minute
+    return () => clearInterval(intervalId); // cleanup on unmount
+  },[]);
+
 
   return (
     <div className="App">
