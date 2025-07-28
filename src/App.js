@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import React,{useEffect, useState} from 'react'
 import { MdDeleteOutline  } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
